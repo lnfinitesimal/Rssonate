@@ -58,8 +58,7 @@ jobs:
       - name: Generate Root Index
         run: |
           cd combined-data
-          # Simple script to generate index.json of all available folders
-          python -c "import os, json; dirs = [d for d in os.listdir('.') if os.path.isdir(d)]; open('index.json', 'w').write(json.dumps(dirs))"
+          python -c "import os, json, glob; files = [f[:-5].replace(os.sep, '/') for f in glob.glob('**/*.json', recursive=True) if f != 'index.json']; open('tree.json', 'w').write(json.dumps(files))"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
