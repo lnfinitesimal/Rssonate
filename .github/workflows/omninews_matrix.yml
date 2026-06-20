@@ -1,0 +1,74 @@
+name: Omninews Planetary Matrix
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Runs every 2 hours
+  workflow_dispatch: # Allows manual trigger
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  scrape-and-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        region: [americas, emea, apac] # Shards to prevent timeouts
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install feedparser requests groq
+          
+      - name: Run Hermes Dispatcher
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          REGION_SHARD: ${{ matrix.region }}
+        run: python scripts/hermes_dispatcher.py
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: omninews-data-${{ matrix.region }}
+          path: public/
+
+  deploy-to-pages:
+    needs: scrape-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: combined-data
+          pattern: omninews-data-*
+          merge-multiple: true
+
+      - name: Generate Root Index
+        run: |
+          cd combined-data
+          # Simple script to generate index.json of all available folders
+          python -c "import os, json; dirs = [d for d in os.listdir('.') if os.path.isdir(d)]; open('index.json', 'w').write(json.dumps(dirs))"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: combined-data/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
