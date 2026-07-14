@@ -1,66 +1,362 @@
 {
-  "version": "1.0",
-  "description": "Generic URL Transformation Rules for Rssonate Engine",
+  "version": "2.0",
   "rules": [
     {
-      "id": "rule_short_domain_x",
-      "description": "Transforms single-letter .com domains (e.g. x.com) into standard bridge queries",
-      "regex": "^https?://(?:www\\.)?(?:[a-zA-Z0-9-]+\\.)?([x])\\.com/([a-zA-Z0-9_]+)/?$",
-      "target": "RSS-Bridge",
-      "query": "?action=display&bridge=Twitter&context=By+username&u=$2&format=Mrss"
-    },
-    {
-      "id": "rule_social_t",
-      "description": "Transforms generic t-social domains into bridge queries",
-      "regex": "^https?://(?:www\\.)?twitter\\.com/([a-zA-Z0-9_]+)/?$",
+      "id": "r_apex1_profile",
+      "regex": "^https?://(?:www\\.)?x\\.com/([a-zA-Z0-9_]{1,50})(?:/(?!status|lists|i|moments|search|explore|notifications|messages|home).*)?$",
       "target": "RSS-Bridge",
       "query": "?action=display&bridge=Twitter&context=By+username&u=$1&format=Mrss"
     },
     {
-      "id": "rule_yt_path",
-      "description": "Routes video platforms with /user/, /c/, or /channel/ paths",
-      "regex": "^https?://(?:www\\.)?youtube\\.com/(?:user|c|channel)/([a-zA-Z0-9_-]+)",
-      "target": "RSSHub",
-      "query": "/youtube/user/$1"
-    },
-    {
-      "id": "rule_yt_handle",
-      "description": "Routes video platforms using the /@handle syntax",
-      "regex": "^https?://(?:www\\.)?youtube\\.com/@([a-zA-Z0-9_-]+)",
-      "target": "RSSHub",
-      "query": "/youtube/user/$1"
-    },
-    {
-      "id": "rule_ig_profile",
-      "description": "Routes generic profile paths",
-      "regex": "^https?://(?:www\\.)?instagram\\.com/([a-zA-Z0-9_\\.]+)/?$",
+      "id": "r_apex2_profile",
+      "regex": "^https?://(?:www\\.)?twitter\\.com/([a-zA-Z0-9_]{1,50})(?:/(?!status|lists|i|moments|search|explore|notifications|messages|home).*)?$",
       "target": "RSS-Bridge",
-      "query": "?action=display&bridge=Instagram&context=Username&u=$1&format=Mrss"
+      "query": "?action=display&bridge=Twitter&context=By+username&u=$1&format=Mrss"
     },
     {
-      "id": "rule_tk_handle",
-      "description": "Routes short-form video handles",
-      "regex": "^https?://(?:www\\.)?tiktok\\.com/@([a-zA-Z0-9_\\.]+)/?$",
+      "id": "r_vid1_handle",
+      "regex": "^https?://(?:www\\.)?youtube\\.com/@([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/youtube/user/$1"
+    },
+    {
+      "id": "r_vid2_channel",
+      "regex": "^https?://(?:www\\.)?youtube\\.com/channel/(UC[a-zA-Z0-9_-]{22})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/youtube/channel/$1"
+    },
+    {
+      "id": "r_vid3_user",
+      "regex": "^https?://(?:www\\.)?youtube\\.com/(?:user|c)/([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/youtube/user/$1"
+    },
+    {
+      "id": "r_sfv1_user",
+      "regex": "^https?://(?:www\\.)?tiktok\\.com/@([a-zA-Z0-9_.]{1,100})(?:/.*)?$",
       "target": "RSS-Bridge",
       "query": "?action=display&bridge=TikTok&context=By+user&u=$1&format=Mrss"
     },
     {
-      "id": "rule_phantom_upscrolled",
-      "description": "Example Phantom Node rule for sites without RSS like UpScrolled",
-      "regex": "^https?://(?:www\\.)?upscrolled\\.com.*",
+      "id": "r_photo1_user",
+      "regex": "^https?://(?:www\\.)?instagram\\.com/([a-zA-Z0-9_.]{1,30})/?(?:\\?.*)?$",
+      "target": "RSS-Bridge",
+      "query": "?action=display&bridge=Instagram&context=Username&u=$1&format=Mrss"
+    },
+    {
+      "id": "r_social1_page",
+      "regex": "^https?://(?:www\\.)?facebook\\.com/(?!groups/)([a-zA-Z0-9._-]{1,100})/?(?:\\?.*)?$",
+      "target": "RSS-Bridge",
+      "query": "?action=display&bridge=Facebook&context=User&u=$1&format=Mrss"
+    },
+    {
+      "id": "r_social2_group",
+      "regex": "^https?://(?:www\\.)?facebook\\.com/groups/([a-zA-Z0-9._-]{1,100})/?(?:\\?.*)?$",
+      "target": "RSS-Bridge",
+      "query": "?action=display&bridge=Facebook&context=Group&g=$1&format=Mrss"
+    },
+    {
+      "id": "r_federated1_profile",
+      "regex": "^https?://(?:www\\.)?bsky\\.app/profile/([a-zA-Z0-9._:-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/bsky/user/$1"
+    },
+    {
+      "id": "r_msg1_channel",
+      "regex": "^https?://(?:www\\.)?t\\.me/([a-zA-Z0-9_]{5,32})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/telegram/channel/$1"
+    },
+    {
+      "id": "r_forum1_sub",
+      "regex": "^https?://(?:www\\.)?reddit\\.com/r/([a-zA-Z0-9_]{1,50})/?(?:\\?.*)?$",
+      "target": "RSSHub",
+      "query": "/reddit/subreddit/$1"
+    },
+    {
+      "id": "r_forum2_user",
+      "regex": "^https?://(?:www\\.)?reddit\\.com/u(?:ser)?/([a-zA-Z0-9_-]{1,50})/?(?:\\?.*)?$",
+      "target": "RSSHub",
+      "query": "/reddit/user/$1"
+    },
+    {
+      "id": "r_stream1_channel",
+      "regex": "^https?://(?:www\\.)?twitch\\.tv/([a-zA-Z0-9_]{1,25})/?(?:\\?.*)?$",
+      "target": "RSSHub",
+      "query": "/twitch/streams/$1"
+    },
+    {
+      "id": "r_dev1_user",
+      "regex": "^https?://(?:www\\.)?github\\.com/([a-zA-Z0-9_-]{1,100})/?(?:\\?.*)?$",
+      "target": "RSSHub",
+      "query": "/github/user/$1"
+    },
+    {
+      "id": "r_dev2_releases",
+      "regex": "^https?://(?:www\\.)?github\\.com/([a-zA-Z0-9_-]{1,100})/([a-zA-Z0-9_.-]{1,100})(?:/releases)?/?(?:\\?.*)?$",
+      "target": "RSSHub",
+      "query": "/github/release/$1/$2"
+    },
+    {
+      "id": "r_pub1_user",
+      "regex": "^https?://(?:www\\.)?medium\\.com/@([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/medium/user/@$1"
+    },
+    {
+      "id": "r_pub2_publication",
+      "regex": "^https?://(?:www\\.)?medium\\.com/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/medium/publication/$1"
+    },
+    {
+      "id": "r_pub3_hosted",
+      "regex": "^https?://([a-zA-Z0-9_-]{1,100})\\.substack\\.com(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://$1.substack.com/feed"
+    },
+    {
+      "id": "r_pub4_at_handle",
+      "regex": "^https?://(?:www\\.)?substack\\.com/@([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/substack/$1"
+    },
+    {
+      "id": "r_blog1_user",
+      "regex": "^https?://(?:www\\.)?tumblr\\.com/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/tumblr/blog/$1"
+    },
+    {
+      "id": "r_blog2_hosted",
+      "regex": "^https?://([a-zA-Z0-9_-]{1,100})\\.tumblr\\.com(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://$1.tumblr.com/rss"
+    },
+    {
+      "id": "r_audio1_user",
+      "regex": "^https?://(?:www\\.)?soundcloud\\.com/([a-zA-Z0-9_.-]{1,100})/?(?:\\?.*)?$",
+      "target": "RSSHub",
+      "query": "/soundcloud/user/$1"
+    },
+    {
+      "id": "r_audio2_playlist",
+      "regex": "^https?://(?:www\\.)?soundcloud\\.com/([a-zA-Z0-9_.-]{1,100})/sets/([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/soundcloud/playlist/$1/$2"
+    },
+    {
+      "id": "r_photo2_user",
+      "regex": "^https?://(?:www\\.)?flickr\\.com/people/([a-zA-Z0-9@_.-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/flickr/people/$1"
+    },
+    {
+      "id": "r_photo3_group",
+      "regex": "^https?://(?:www\\.)?flickr\\.com/groups/([a-zA-Z0-9@_.-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/flickr/group/$1"
+    },
+    {
+      "id": "r_social3_board",
+      "regex": "^https?://(?:www\\.)?pinterest\\.com/([a-zA-Z0-9_.-]{1,100})(?:/([a-zA-Z0-9_.-]{1,100}))?/?(?:\\?.*)?$",
+      "target": "RSSHub",
+      "query": "/pinterest/$1"
+    },
+    {
+      "id": "r_vid4_user",
+      "regex": "^https?://(?:www\\.)?bilibili\\.com/space/(\\d{1,20})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/bilibili/user/video/$1"
+    },
+    {
+      "id": "r_federated2_user",
+      "regex": "^https?://mastodon\\.social/@([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://mastodon.social/@$1.rss"
+    },
+    {
+      "id": "r_federated3_generic",
+      "regex": "^https?://([a-zA-Z0-9.-]+\\.(?:social|online|world|fediverse|masto\\.host|fosstodon\\.org|hachyderm\\.io|infosec\\.exchange))/@([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://$1/@$2.rss"
+    },
+    {
+      "id": "r_news1_section",
+      "regex": "^https?://(?:www\\.)?reuters\\.com/(world|business|legal|markets|sustainability|technology|science|sports|lifestyle)(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/reuters/category/$1"
+    },
+    {
+      "id": "r_news2_topic",
+      "regex": "^https?://(?:www\\.)?apnews\\.com/hub/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/apnews/topics/$1"
+    },
+    {
+      "id": "r_news3_section",
+      "regex": "^https?://(?:www\\.)?bbc\\.com/(?:news|sport)/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/bbc/category/$1"
+    },
+    {
+      "id": "r_news4_section",
+      "regex": "^https?://(?:www\\.)?theguardian\\.com/([a-zA-Z0-9/-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://www.theguardian.com/$1/rss"
+    },
+    {
+      "id": "r_news5_topic",
+      "regex": "^https?://(?:www\\.)?npr\\.org/sections/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://feeds.npr.org/1001/rss.xml"
+    },
+    {
+      "id": "r_news6_tag",
+      "regex": "^https?://(?:www\\.)?wired\\.com/(?:tag|category)/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://www.wired.com/feed/tag/$1/rss"
+    },
+    {
+      "id": "r_news7_tag",
+      "regex": "^https?://(?:www\\.)?techcrunch\\.com/tag/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://techcrunch.com/tag/$1/feed/"
+    },
+    {
+      "id": "r_news8_author",
+      "regex": "^https?://(?:www\\.)?theverge\\.com/authors/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://www.theverge.com/authors/$1/rss/index.xml"
+    },
+    {
+      "id": "r_news9_topic",
+      "regex": "^https?://(?:www\\.)?arstechnica\\.com/(?:tag|author|category)/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://arstechnica.com/tag/$1/feed/"
+    },
+    {
+      "id": "r_sfv2_timeline",
+      "regex": "^https?://(?:[a-zA-Z0-9.-]+\\.)?upscrolled\\.com(?:/[a-z]{2})?(?:/(?:profile|u|user|@)?/([a-zA-Z0-9_.-]{1,100}))?/?(?:\\?.*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
-        "waitForSelector": ".video-card",
-        "extractJS": "Array.from(document.querySelectorAll('.video-card')).map(c => ({ title: c.querySelector('h3')?.innerText || 'UpScrolled Video', videoUrl: c.querySelector('video')?.src, url: window.location.href }))"
+        "waitForSelector": "article, [class*='post'], [class*='card'], [class*='video'], [class*='feed'], [class*='item'], main",
+        "extractJS": "(function(){ var username = '$1'; var items = Array.from(document.querySelectorAll('article, [class*=\"post\"], [class*=\"card\"], [class*=\"video\"], [class*=\"item\"]')).filter(function(el){ return el.querySelector('a[href]') !== null; }).slice(0, 30).map(function(el){ var link = el.querySelector('a[href]'); var img = el.querySelector('img, video'); var title = el.querySelector('h1,h2,h3,h4,[class*=\"title\"],[class*=\"heading\"]'); var desc = el.querySelector('p,[class*=\"desc\"],[class*=\"caption\"],[class*=\"body\"]'); return { title: (title && title.innerText.trim()) || (link && link.innerText.trim()) || 'Post', url: link ? (link.href.startsWith('http') ? link.href : window.location.origin + link.getAttribute('href')) : window.location.href, imageUrl: img ? (img.src || img.getAttribute('poster') || '') : '', snippet: desc ? desc.innerText.trim().substring(0,300) : '', author: username || (document.querySelector('[class*=\"author\"],[class*=\"username\"]') || {innerText:''}).innerText.trim() }; }); return items.length > 0 ? items : [{ title: 'Feed loaded', url: window.location.href, imageUrl: '', snippet: document.title }]; })()"
       }
     },
     {
-      "id": "rule_reddit_sub",
-      "description": "Routes forum sub-pages",
-      "regex": "^https?://(?:www\\.)?reddit\\.com/r/([a-zA-Z0-9_]+)/?$",
+      "id": "r_social4_vk_user",
+      "regex": "^https?://(?:www\\.)?vk\\.com/([a-zA-Z0-9_.-]{1,100})/?(?:\\?.*)?$",
       "target": "RSSHub",
-      "query": "/reddit/subreddit/$1"
+      "query": "/vk/user/$1"
+    },
+    {
+      "id": "r_social4_vk_wall",
+      "regex": "^https?://(?:www\\.)?vk\\.com/wall(-?\\d{1,20})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/vk/wall/$1"
+    },
+    {
+      "id": "r_dev3_hacker_news",
+      "regex": "^https?://news\\.ycombinator\\.com(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://news.ycombinator.com/rss"
+    },
+    {
+      "id": "r_dev4_lobsters",
+      "regex": "^https?://lobste\\.rs(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://lobste.rs/rss"
+    },
+    {
+      "id": "r_dev5_devto_user",
+      "regex": "^https?://dev\\.to/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://dev.to/feed/$1"
+    },
+    {
+      "id": "r_dev6_devto_tag",
+      "regex": "^https?://dev\\.to/t/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://dev.to/feed/tag/$1"
+    },
+    {
+      "id": "r_business1_company",
+      "regex": "^https?://(?:www\\.)?linkedin\\.com/company/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/linkedin/company/$1"
+    },
+    {
+      "id": "r_creative1_user",
+      "regex": "^https?://(?:www\\.)?deviantart\\.com/([a-zA-Z0-9_-]{1,100})/?(?:\\?.*)?$",
+      "target": "RSSHub",
+      "query": "/deviantart/user/$1"
+    },
+    {
+      "id": "r_creative2_tag",
+      "regex": "^https?://(?:www\\.)?deviantart\\.com/tag/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/deviantart/tag/$1"
+    },
+    {
+      "id": "r_music1_artist",
+      "regex": "^https?://([a-zA-Z0-9_-]{1,100})\\.bandcamp\\.com(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://$1.bandcamp.com/feed.rss"
+    },
+    {
+      "id": "r_vid6_vimeo_user",
+      "regex": "^https?://(?:www\\.)?vimeo\\.com/([a-zA-Z0-9_-]{1,100})/?(?:\\?.*)?$",
+      "target": "Direct",
+      "query": "https://vimeo.com/$1/videos/rss"
+    },
+    {
+      "id": "r_vid6_vimeo_channel",
+      "regex": "^https?://(?:www\\.)?vimeo\\.com/channels/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://vimeo.com/channels/$1/videos/rss"
+    },
+    {
+      "id": "r_podcast1_shows",
+      "regex": "^https?://(?:open\\.)?spotify\\.com/show/([a-zA-Z0-9]{22})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/spotify/show/$1"
+    },
+    {
+      "id": "r_social5_threads_user",
+      "regex": "^https?://(?:www\\.)?threads\\.net/@([a-zA-Z0-9_.]{1,50})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/threads/user/$1"
+    },
+    {
+      "id": "r_news10_economist",
+      "regex": "^https?://(?:www\\.)?economist\\.com/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://www.economist.com/$1/rss.xml"
+    },
+    {
+      "id": "r_news11_wsj",
+      "regex": "^https?://(?:www\\.)?wsj\\.com/news/(?:types|author)/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/wsj/news/$1"
+    },
+    {
+      "id": "r_news12_nyt",
+      "regex": "^https?://(?:www\\.)?nytimes\\.com/section/([a-zA-Z0-9/-]{1,100})(?:/.*)?$",
+      "target": "Direct",
+      "query": "https://www.nytimes.com/svc/collections/v1/publish/www.nytimes.com/section/$1/rss.xml"
+    },
+    {
+      "id": "r_news13_washpost",
+      "regex": "^https?://(?:www\\.)?washingtonpost\\.com/(?:world|politics|technology|sports|lifestyle)/([a-zA-Z0-9_/-]{1,100})(?:/.*)?$",
+      "target": "RSSHub",
+      "query": "/washingtonpost/topics/$1"
+    },
+    {
+      "id": "r_knowledge1_wiki",
+      "regex": "^https?://([a-zA-Z0-9-]+)\\.wikipedia\\.org/wiki/([^#?]{1,200})(?:.*)?$",
+      "target": "Direct",
+      "query": "https://$1.wikipedia.org/w/index.php?title=$2&feed=atom"
     }
   ]
 }
-
