@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "description": "Generic URL Transformation Rules for Rssonate Engine",
+  "rules": [
+    {
+      "id": "rule_short_domain_x",
+      "description": "Transforms single-letter .com domains (e.g. x.com) into standard bridge queries",
+      "regex": "^https?://(?:www\\.)?(?:[a-zA-Z0-9-]+\\.)?([x])\\.com/([a-zA-Z0-9_]+)/?$",
+      "target": "RSS-Bridge",
+      "query": "?action=display&bridge=Twitter&context=By+username&u=$2&format=Mrss"
+    },
+    {
+      "id": "rule_social_t",
+      "description": "Transforms generic t-social domains into bridge queries",
+      "regex": "^https?://(?:www\\.)?twitter\\.com/([a-zA-Z0-9_]+)/?$",
+      "target": "RSS-Bridge",
+      "query": "?action=display&bridge=Twitter&context=By+username&u=$1&format=Mrss"
+    },
+    {
+      "id": "rule_yt_path",
+      "description": "Routes video platforms with /user/, /c/, or /channel/ paths",
+      "regex": "^https?://(?:www\\.)?youtube\\.com/(?:user|c|channel)/([a-zA-Z0-9_-]+)",
+      "target": "RSSHub",
+      "query": "/youtube/user/$1"
+    },
+    {
+      "id": "rule_yt_handle",
+      "description": "Routes video platforms using the /@handle syntax",
+      "regex": "^https?://(?:www\\.)?youtube\\.com/@([a-zA-Z0-9_-]+)",
+      "target": "RSSHub",
+      "query": "/youtube/user/$1"
+    },
+    {
+      "id": "rule_ig_profile",
+      "description": "Routes generic profile paths",
+      "regex": "^https?://(?:www\\.)?instagram\\.com/([a-zA-Z0-9_\\.]+)/?$",
+      "target": "RSS-Bridge",
+      "query": "?action=display&bridge=Instagram&context=Username&u=$1&format=Mrss"
+    },
+    {
+      "id": "rule_tk_handle",
+      "description": "Routes short-form video handles",
+      "regex": "^https?://(?:www\\.)?tiktok\\.com/@([a-zA-Z0-9_\\.]+)/?$",
+      "target": "RSS-Bridge",
+      "query": "?action=display&bridge=TikTok&context=By+user&u=$1&format=Mrss"
+    },
+    {
+      "id": "rule_phantom_upscrolled",
+      "description": "Example Phantom Node rule for sites without RSS like UpScrolled",
+      "regex": "^https?://(?:www\\.)?upscrolled\\.com.*",
+      "target": "PhantomNode",
+      "phantomConfig": {
+        "waitForSelector": ".video-card",
+        "extractJS": "Array.from(document.querySelectorAll('.video-card')).map(c => ({ title: c.querySelector('h3')?.innerText || 'UpScrolled Video', videoUrl: c.querySelector('video')?.src, url: window.location.href }))"
+      }
+    },
+    {
+      "id": "rule_reddit_sub",
+      "description": "Routes forum sub-pages",
+      "regex": "^https?://(?:www\\.)?reddit\\.com/r/([a-zA-Z0-9_]+)/?$",
+      "target": "RSSHub",
+      "query": "/reddit/subreddit/$1"
+    }
+  ]
+}
+
