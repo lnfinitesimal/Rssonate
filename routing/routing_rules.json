@@ -48,8 +48,8 @@
       "regex": "^https?://(?:www\\.)?tiktok\\.com/@([a-zA-Z0-9_.]{1,100})(?:/.*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
-        "waitForSelector": "[data-e2e='user-post-item']",
-        "extractJS": "(function(){ var items = Array.from(document.querySelectorAll('[data-e2e=\"user-post-item\"]')).slice(0, 20).map(function(el){ var link = el.querySelector('a'); var img = el.querySelector('img'); var title = el.querySelector('[data-e2e=\"user-post-item-desc\"]'); return { title: (title ? title.innerText : 'Video'), url: link ? link.href : window.location.href, imageUrl: img ? img.src : '', snippet: (title ? title.innerText : '') }; }); return items; })()"
+        "waitForSelector": "[data-e2e='user-post-item'], [data-e2e='login-modal'], div[class*='LoginContainer']",
+        "extractJS": "(function(){ if (document.querySelector('[data-e2e=\"login-modal\"]') || document.querySelector('div[class*=\"LoginContainer\"]')) { return [{ title: 'Login Required', url: window.location.href, snippet: 'TikTok requires login to view profiles in this region. Please link your account in Settings \u003e Sync \u003e Social.', author: 'System' }]; } var items = Array.from(document.querySelectorAll('[data-e2e=\"user-post-item\"]')).slice(0, 20).map(function(el){ var link = el.querySelector('a'); var img = el.querySelector('img'); var title = el.querySelector('[data-e2e=\"user-post-item-desc\"]'); return { title: (title ? title.innerText : 'Video'), url: link ? link.href : window.location.href, imageUrl: img ? img.src : '', snippet: (title ? title.innerText : '') }; }); return items; })()"
       }
     },
     {
@@ -64,8 +64,8 @@
       "regex": "^https?://(?:www\\.)?facebook\\.com/(?!groups/)([a-zA-Z0-9._-]{1,100})/?(?:\\?.*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
-        "waitForSelector": "div[role='article'], article, .story_body_container",
-        "extractJS": "(function(){ var items = Array.from(document.querySelectorAll('div[role=\"article\"], article, .story_body_container')).slice(0, 20).map(function(el){ var link = el.querySelector('a[href*=\"/posts/\"], a[href*=\"/photos/\"], a[href*=\"/videos/\"], a[href*=\"/story.php\"]'); var img = el.querySelector('img'); var textEl = el.querySelector('[data-ad-preview=\"message\"], .story_body_container > div, div[class*=\"copy\"]'); return { title: (textEl ? textEl.innerText.split('\\n')[0].substring(0, 80) : 'Facebook Post'), url: link ? (link.href.startsWith('http') ? link.href : 'https://m.facebook.com' + link.getAttribute('href')) : window.location.href, imageUrl: img ? img.src : '', snippet: textEl ? textEl.innerText.substring(0, 300) : '' }; }).filter(function(i){ return i.url !== window.location.href; }); return items; })()"
+        "waitForSelector": "div[role='article'], article, .story_body_container, form[action*='/login/']",
+        "extractJS": "(function(){ if (window.location.href.includes('/login/') || document.querySelector('form[action*=\"/login/\"]')) { return [{ title: 'Login Required', url: window.location.href, snippet: 'Please go to Settings > Sync > Social and link your Facebook account to enable extraction.', author: 'System' }]; } var acceptBtn = document.querySelector('button[value=\"Accept All\"], button[data-cookiebanner=\"accept_button\"]'); if (acceptBtn) acceptBtn.click(); var items = Array.from(document.querySelectorAll('div[role=\"article\"], article, .story_body_container')).slice(0, 20).map(function(el){ var link = el.querySelector('a[href*=\"/posts/\"], a[href*=\"/photos/\"], a[href*=\"/videos/\"], a[href*=\"/story.php\"]'); var img = el.querySelector('img'); var textEl = el.querySelector('[data-ad-preview=\"message\"], .story_body_container \u003e div, div[class*=\"copy\"]'); return { title: (textEl ? textEl.innerText.split('\\n')[0].substring(0, 80) : 'Facebook Post'), url: link ? (link.href.startsWith('http') ? link.href : 'https://m.facebook.com' + link.getAttribute('href')) : window.location.href, imageUrl: img ? img.src : '', snippet: textEl ? textEl.innerText.substring(0, 300) : '' }; }).filter(function(i){ return i.url !== window.location.href; }); return items; })()"
       }
     },
     {
@@ -74,8 +74,8 @@
       "regex": "^https?://(?:www\\.)?facebook\\.com/groups/([a-zA-Z0-9._-]{1,100})/?(?:\\?.*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
-        "waitForSelector": "div[role='article'], article, .story_body_container",
-        "extractJS": "(function(){ var items = Array.from(document.querySelectorAll('div[role=\"article\"], article, .story_body_container')).slice(0, 20).map(function(el){ var link = el.querySelector('a[href*=\"/permalink/\"], a[href*=\"/story.php\"]'); var img = el.querySelector('img'); var textEl = el.querySelector('[data-ad-preview=\"message\"], .story_body_container > div'); return { title: (textEl ? textEl.innerText.split('\\n')[0].substring(0, 80) : 'Facebook Post'), url: link ? (link.href.startsWith('http') ? link.href : 'https://m.facebook.com' + link.getAttribute('href')) : window.location.href, imageUrl: img ? img.src : '', snippet: textEl ? textEl.innerText.substring(0, 300) : '' }; }).filter(function(i){ return i.url !== window.location.href; }); return items; })()"
+        "waitForSelector": "div[role='article'], article, .story_body_container, form[action*='/login/']",
+        "extractJS": "(function(){ if (window.location.href.includes('/login/') || document.querySelector('form[action*=\"/login/\"]')) { return [{ title: 'Login Required', url: window.location.href, snippet: 'Please go to Settings \u003e Sync \u003e Social and link your Facebook account to enable extraction.', author: 'System' }]; } var items = Array.from(document.querySelectorAll('div[role=\"article\"], article, .story_body_container')).slice(0, 20).map(function(el){ var link = el.querySelector('a[href*=\"/permalink/\"], a[href*=\"/story.php\"]'); var img = el.querySelector('img'); var textEl = el.querySelector('[data-ad-preview=\"message\"], .story_body_container \u003e div'); return { title: (textEl ? textEl.innerText.split('\\n')[0].substring(0, 80) : 'Facebook Post'), url: link ? (link.href.startsWith('http') ? link.href : 'https://m.facebook.com' + link.getAttribute('href')) : window.location.href, imageUrl: img ? img.src : '', snippet: textEl ? textEl.innerText.substring(0, 300) : '' }; }).filter(function(i){ return i.url !== window.location.href; }); return items; })()"
       }
     },
     {
