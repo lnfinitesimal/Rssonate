@@ -4,14 +4,20 @@
     {
       "id": "r_apex1_profile",
       "regex": "^https?://(?:www\\.)?x\\.com/([a-zA-Z0-9_]{1,50})(?:/(?!status|lists|i|moments|search|explore|notifications|messages|home).*)?$",
-      "target": "RSS-Bridge",
-      "query": "?action=display&bridge=Twitter&context=By+username&u=$1&format=Mrss"
+      "target": "PhantomNode",
+      "phantomConfig": {
+        "waitForSelector": "article[data-testid='tweet']",
+        "extractJS": "(function(){ var items = Array.from(document.querySelectorAll('article[data-testid=\"tweet\"]')).slice(0, 20).map(function(el){ var link = el.querySelector('a[href*=\"/status/\"]'); var img = el.querySelector('div[data-testid=\"tweetPhoto\"] img'); var textEl = el.querySelector('div[data-testid=\"tweetText\"]'); return { title: (textEl ? textEl.innerText.split('\\n')[0].substring(0, 80) : 'Tweet'), url: link ? link.href : window.location.href, imageUrl: img ? img.src : '', snippet: textEl ? textEl.innerText : '' }; }); return items; })()"
+      }
     },
     {
       "id": "r_apex2_profile",
       "regex": "^https?://(?:www\\.)?twitter\\.com/([a-zA-Z0-9_]{1,50})(?:/(?!status|lists|i|moments|search|explore|notifications|messages|home).*)?$",
-      "target": "RSS-Bridge",
-      "query": "?action=display&bridge=Twitter&context=By+username&u=$1&format=Mrss"
+      "target": "PhantomNode",
+      "phantomConfig": {
+        "waitForSelector": "article[data-testid='tweet']",
+        "extractJS": "(function(){ var items = Array.from(document.querySelectorAll('article[data-testid=\"tweet\"]')).slice(0, 20).map(function(el){ var link = el.querySelector('a[href*=\"/status/\"]'); var img = el.querySelector('div[data-testid=\"tweetPhoto\"] img'); var textEl = el.querySelector('div[data-testid=\"tweetText\"]'); return { title: (textEl ? textEl.innerText.split('\\n')[0].substring(0, 80) : 'Tweet'), url: link ? link.href : window.location.href, imageUrl: img ? img.src : '', snippet: textEl ? textEl.innerText : '' }; }); return items; })()"
+      }
     },
     {
       "id": "r_vid1_handle",
@@ -34,8 +40,11 @@
     {
       "id": "r_sfv1_user",
       "regex": "^https?://(?:www\\.)?tiktok\\.com/@([a-zA-Z0-9_.]{1,100})(?:/.*)?$",
-      "target": "RSS-Bridge",
-      "query": "?action=display&bridge=TikTok&context=By+user&u=$1&format=Mrss"
+      "target": "PhantomNode",
+      "phantomConfig": {
+        "waitForSelector": "[data-e2e='user-post-item']",
+        "extractJS": "(function(){ var items = Array.from(document.querySelectorAll('[data-e2e=\"user-post-item\"]')).slice(0, 20).map(function(el){ var link = el.querySelector('a'); var img = el.querySelector('img'); var title = el.querySelector('[data-e2e=\"user-post-item-desc\"]'); return { title: (title ? title.innerText : 'Video'), url: link ? link.href : window.location.href, imageUrl: img ? img.src : '', snippet: (title ? title.innerText : '') }; }); return items; })()"
+      }
     },
     {
       "id": "r_photo1_user",
@@ -46,14 +55,20 @@
     {
       "id": "r_social1_page",
       "regex": "^https?://(?:www\\.)?facebook\\.com/(?!groups/)([a-zA-Z0-9._-]{1,100})/?(?:\\?.*)?$",
-      "target": "RSS-Bridge",
-      "query": "?action=display&bridge=Facebook&context=User&u=$1&format=Mrss"
+      "target": "PhantomNode",
+      "phantomConfig": {
+        "waitForSelector": "div[role='article'], article, .story_body_container",
+        "extractJS": "(function(){ var items = Array.from(document.querySelectorAll('div[role=\"article\"], article, .story_body_container')).slice(0, 20).map(function(el){ var link = el.querySelector('a[href*=\"/posts/\"], a[href*=\"/photos/\"], a[href*=\"/videos/\"], a[href*=\"/story.php\"]'); var img = el.querySelector('img'); var textEl = el.querySelector('[data-ad-preview=\"message\"], .story_body_container > div, div[class*=\"copy\"]'); return { title: (textEl ? textEl.innerText.split('\\n')[0].substring(0, 80) : 'Facebook Post'), url: link ? (link.href.startsWith('http') ? link.href : 'https://m.facebook.com' + link.getAttribute('href')) : window.location.href, imageUrl: img ? img.src : '', snippet: textEl ? textEl.innerText.substring(0, 300) : '' }; }).filter(function(i){ return i.url !== window.location.href; }); return items; })()"
+      }
     },
     {
       "id": "r_social2_group",
       "regex": "^https?://(?:www\\.)?facebook\\.com/groups/([a-zA-Z0-9._-]{1,100})/?(?:\\?.*)?$",
-      "target": "RSS-Bridge",
-      "query": "?action=display&bridge=Facebook&context=Group&g=$1&format=Mrss"
+      "target": "PhantomNode",
+      "phantomConfig": {
+        "waitForSelector": "div[role='article'], article, .story_body_container",
+        "extractJS": "(function(){ var items = Array.from(document.querySelectorAll('div[role=\"article\"], article, .story_body_container')).slice(0, 20).map(function(el){ var link = el.querySelector('a[href*=\"/permalink/\"], a[href*=\"/story.php\"]'); var img = el.querySelector('img'); var textEl = el.querySelector('[data-ad-preview=\"message\"], .story_body_container > div'); return { title: (textEl ? textEl.innerText.split('\\n')[0].substring(0, 80) : 'Facebook Post'), url: link ? (link.href.startsWith('http') ? link.href : 'https://m.facebook.com' + link.getAttribute('href')) : window.location.href, imageUrl: img ? img.src : '', snippet: textEl ? textEl.innerText.substring(0, 300) : '' }; }).filter(function(i){ return i.url !== window.location.href; }); return items; })()"
+      }
     },
     {
       "id": "r_federated1_profile",
