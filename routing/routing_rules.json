@@ -3,6 +3,7 @@
   "rules": [
     {
       "id": "r_apex1_profile",
+      "description": "Twitter Profile (X)",
       "regex": "^https?://(?:www\\.)?x\\.com/([a-zA-Z0-9_]{1,50})(?:/(?!status|lists|i|moments|search|explore|notifications|messages|home).*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
@@ -12,6 +13,7 @@
     },
     {
       "id": "r_apex2_profile",
+      "description": "Twitter Profile (legacy)",
       "regex": "^https?://(?:www\\.)?twitter\\.com/([a-zA-Z0-9_]{1,50})(?:/(?!status|lists|i|moments|search|explore|notifications|messages|home).*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
@@ -21,24 +23,28 @@
     },
     {
       "id": "r_vid1_handle",
+      "description": "YouTube Handle",
       "regex": "^https?://(?:www\\.)?youtube\\.com/@([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/youtube/user/$1"
     },
     {
       "id": "r_vid2_channel",
+      "description": "YouTube Channel",
       "regex": "^https?://(?:www\\.)?youtube\\.com/channel/(UC[a-zA-Z0-9_-]{22})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/youtube/channel/$1"
     },
     {
       "id": "r_vid3_user",
+      "description": "YouTube User",
       "regex": "^https?://(?:www\\.)?youtube\\.com/(?:user|c)/([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/youtube/user/$1"
     },
     {
       "id": "r_sfv1_user",
+      "description": "TikTok User",
       "regex": "^https?://(?:www\\.)?tiktok\\.com/@([a-zA-Z0-9_.]{1,100})(?:/.*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
@@ -54,6 +60,7 @@
     },
     {
       "id": "r_social1_page",
+      "description": "Facebook Page",
       "regex": "^https?://(?:www\\.)?facebook\\.com/(?!groups/)([a-zA-Z0-9._-]{1,100})/?(?:\\?.*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
@@ -63,6 +70,7 @@
     },
     {
       "id": "r_social2_group",
+      "description": "Facebook Group",
       "regex": "^https?://(?:www\\.)?facebook\\.com/groups/([a-zA-Z0-9._-]{1,100})/?(?:\\?.*)?$",
       "target": "PhantomNode",
       "phantomConfig": {
@@ -72,54 +80,63 @@
     },
     {
       "id": "r_federated1_profile",
+      "description": "Bluesky Profile",
       "regex": "^https?://(?:www\\.)?bsky\\.app/profile/([a-zA-Z0-9._:-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/bsky/user/$1"
     },
     {
       "id": "r_msg1_channel",
+      "description": "Telegram Channel",
       "regex": "^https?://(?:www\\.)?t\\.me/([a-zA-Z0-9_]{5,32})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/telegram/channel/$1"
     },
     {
       "id": "r_forum1_sub",
+      "description": "Reddit Subreddit",
       "regex": "^https?://(?:www\\.)?reddit\\.com/r/([a-zA-Z0-9_]{1,50})/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/reddit/subreddit/$1"
     },
     {
       "id": "r_forum2_user",
+      "description": "Reddit User",
       "regex": "^https?://(?:www\\.)?reddit\\.com/u(?:ser)?/([a-zA-Z0-9_-]{1,50})/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/reddit/user/$1"
     },
     {
       "id": "r_stream1_channel",
+      "description": "Twitch Channel",
       "regex": "^https?://(?:www\\.)?twitch\\.tv/([a-zA-Z0-9_]{1,25})/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/twitch/streams/$1"
     },
     {
       "id": "r_dev1_user",
+      "description": "GitHub User",
       "regex": "^https?://(?:www\\.)?github\\.com/([a-zA-Z0-9_-]{1,100})/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/github/user/$1"
     },
     {
       "id": "r_dev2_releases",
+      "description": "GitHub Releases",
       "regex": "^https?://(?:www\\.)?github\\.com/([a-zA-Z0-9_-]{1,100})/([a-zA-Z0-9_.-]{1,100})(?:/releases)?/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/github/release/$1/$2"
     },
     {
       "id": "r_pub1_user",
+      "description": "Medium User",
       "regex": "^https?://(?:www\\.)?medium\\.com/@([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/medium/user/@$1"
     },
     {
       "id": "r_pub2_publication",
+      "description": "Medium Publication",
       "regex": "^https?://(?:www\\.)?medium\\.com/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/medium/publication/$1"
@@ -132,12 +149,14 @@
     },
     {
       "id": "r_pub4_at_handle",
+      "description": "Substack Handle",
       "regex": "^https?://(?:www\\.)?substack\\.com/@([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/substack/$1"
     },
     {
       "id": "r_blog1_user",
+      "description": "Tumblr Blog",
       "regex": "^https?://(?:www\\.)?tumblr\\.com/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/tumblr/blog/$1"
@@ -150,36 +169,42 @@
     },
     {
       "id": "r_audio1_user",
+      "description": "SoundCloud User",
       "regex": "^https?://(?:www\\.)?soundcloud\\.com/([a-zA-Z0-9_.-]{1,100})/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/soundcloud/user/$1"
     },
     {
       "id": "r_audio2_playlist",
+      "description": "SoundCloud Playlist",
       "regex": "^https?://(?:www\\.)?soundcloud\\.com/([a-zA-Z0-9_.-]{1,100})/sets/([a-zA-Z0-9_.-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/soundcloud/playlist/$1/$2"
     },
     {
       "id": "r_photo2_user",
+      "description": "Flickr People",
       "regex": "^https?://(?:www\\.)?flickr\\.com/people/([a-zA-Z0-9@_.-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/flickr/people/$1"
     },
     {
       "id": "r_photo3_group",
+      "description": "Flickr Group",
       "regex": "^https?://(?:www\\.)?flickr\\.com/groups/([a-zA-Z0-9@_.-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/flickr/group/$1"
     },
     {
       "id": "r_social3_board",
+      "description": "Pinterest Board",
       "regex": "^https?://(?:www\\.)?pinterest\\.com/([a-zA-Z0-9_.-]{1,100})(?:/([a-zA-Z0-9_.-]{1,100}))?/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/pinterest/$1"
     },
     {
       "id": "r_vid4_user",
+      "description": "Bilibili User",
       "regex": "^https?://(?:www\\.)?bilibili\\.com/space/(\\d{1,20})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/bilibili/user/video/$1"
@@ -198,18 +223,21 @@
     },
     {
       "id": "r_news1_section",
+      "description": "Reuters Category",
       "regex": "^https?://(?:www\\.)?reuters\\.com/(world|business|legal|markets|sustainability|technology|science|sports|lifestyle)(?:/.*)?$",
       "target": "RSSHub",
       "query": "/reuters/category/$1"
     },
     {
       "id": "r_news2_topic",
+      "description": "AP News Hub",
       "regex": "^https?://(?:www\\.)?apnews\\.com/hub/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/apnews/topics/$1"
     },
     {
       "id": "r_news3_section",
+      "description": "BBC Category",
       "regex": "^https?://(?:www\\.)?bbc\\.com/(?:news|sport)/([a-zA-Z0-9-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/bbc/category/$1"
@@ -261,12 +289,14 @@
     },
     {
       "id": "r_social4_vk_user",
+      "description": "VK User",
       "regex": "^https?://(?:www\\.)?vk\\.com/([a-zA-Z0-9_.-]{1,100})/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/vk/user/$1"
     },
     {
       "id": "r_social4_vk_wall",
+      "description": "VK Wall",
       "regex": "^https?://(?:www\\.)?vk\\.com/wall(-?\\d{1,20})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/vk/wall/$1"
@@ -297,18 +327,21 @@
     },
     {
       "id": "r_business1_company",
+      "description": "LinkedIn Company",
       "regex": "^https?://(?:www\\.)?linkedin\\.com/company/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/linkedin/company/$1"
     },
     {
       "id": "r_creative1_user",
+      "description": "DeviantArt User",
       "regex": "^https?://(?:www\\.)?deviantart\\.com/([a-zA-Z0-9_-]{1,100})/?(?:\\?.*)?$",
       "target": "RSSHub",
       "query": "/deviantart/user/$1"
     },
     {
       "id": "r_creative2_tag",
+      "description": "DeviantArt Tag",
       "regex": "^https?://(?:www\\.)?deviantart\\.com/tag/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/deviantart/tag/$1"
@@ -333,12 +366,14 @@
     },
     {
       "id": "r_podcast1_shows",
+      "description": "Spotify Show",
       "regex": "^https?://(?:open\\.)?spotify\\.com/show/([a-zA-Z0-9]{22})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/spotify/show/$1"
     },
     {
       "id": "r_social5_threads_user",
+      "description": "Threads User",
       "regex": "^https?://(?:www\\.)?threads\\.net/@([a-zA-Z0-9_.]{1,50})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/threads/user/$1"
@@ -351,6 +386,7 @@
     },
     {
       "id": "r_news11_wsj",
+      "description": "WSJ News",
       "regex": "^https?://(?:www\\.)?wsj\\.com/news/(?:types|author)/([a-zA-Z0-9_-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/wsj/news/$1"
@@ -363,6 +399,7 @@
     },
     {
       "id": "r_news13_washpost",
+      "description": "Washington Post Topics",
       "regex": "^https?://(?:www\\.)?washingtonpost\\.com/(?:world|politics|technology|sports|lifestyle)/([a-zA-Z0-9_/-]{1,100})(?:/.*)?$",
       "target": "RSSHub",
       "query": "/washingtonpost/topics/$1"
